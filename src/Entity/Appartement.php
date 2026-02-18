@@ -206,4 +206,15 @@ class Appartement
         }
         return false;
     }
+
+    #[Groups(['appartement:detail'])]
+    function getLocationActive() : ?Location {
+        foreach ($this->locations as $location) {
+            if ($location->isActive()) {
+                return $location;
+            }
+        }
+        return null;
+    }
+
 }

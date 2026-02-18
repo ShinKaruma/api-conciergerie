@@ -10,29 +10,54 @@ use Doctrine\ORM\Mapping as ORM;
 use DateTimeImmutable;
 use DateTimeZone;
 use Doctrine\DBAL\Types\Types;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\QueryParameter;
+use ApiPlatform\Metadata\GetCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Metadata\ApiProperty;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Doctrine\Orm\Filter\ExactFilter;
+use ApiPlatform\Metadata\Post;
 
 #[ORM\Entity(repositoryClass: LocationRepository::class)]
 #[ApiResource(
-    normalizationContext: ['groups' => ['read']],
-    denormalizationContext: ['groups' => ['write']],
+    operations: [
+        new Get(normalizationContext: ['groups' => ['location:detail']]),
+        new GetCollection(
+            normalizationContext: ['groups' => ['location:list']],
+            parameters: [
+                'appartement' => new QueryParameter(
+                    property: 'appartement',
+                    filter: new ExactFilter()
+                ),
+            ]
+        ),
+        new Post()
+    ],
+    denormalizationContext: ['groups' => ['location:write']],
 )]
 class Location
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['location:detail', 'location:list', 'location:write', 'appartement:detail'])]
     private ?int $id = null;
 
+    #[Groups(['location:detail', 'location:list', 'location:write', 'appartement:detail'])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateDebut = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(['location:detail', 'location:list', 'location:write', 'appartement:detail'])]
     private ?\DateTimeInterface $dateFin = null;
 
     #[ORM\ManyToOne(inversedBy: 'locations')]
+    #[Groups(['location:detail', 'location:list', 'location:write'])]
     private ?Appartement $appartement = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[Groups(['location:detail', 'location:list', 'location:write', 'appartement:detail'])]
     private ?Locataire $locataire = null;
 
     /**
@@ -131,6 +156,7 @@ class Location
         return $this->appartement->getProprietaire()->getCouleur();
     }
 
+    #[Groups(['location:detail', 'location:list', 'appartement:detail'])]
     public function isActive(): bool {
         $now = new DateTimeImmutable('now', new DateTimeZone('Europe/Paris'));
 
