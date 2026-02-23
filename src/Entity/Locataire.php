@@ -3,19 +3,19 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
-use App\Repository\ServiceRepository;
-use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\Mapping as ORM;
-
-namespace App\Entity;
-
-use ApiPlatform\Metadata\ApiResource;
 use App\Repository\LocataireRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Metadata\ApiProperty;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Doctrine\Orm\Filter\ExactFilter;
+use ApiPlatform\Metadata\Post;
 
 #[ApiResource(
-    normalizationContext: ['groups' => ['read']],
-    denormalizationContext: ['groups' => ['write']],
+    operations: [
+        new Get(normalizationContext: ['groups' => ['location:detail']]),
+    ],
+    denormalizationContext: ['groups' => ['location:write']],
 )]
 #[ORM\Entity(repositoryClass: LocataireRepository::class)]
 class Locataire
@@ -23,14 +23,18 @@ class Locataire
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['location:detail', 'location:list', 'location:write', 'appartement:detail', 'planning:read'])]
     private ?int $id = null;
 
+    #[Groups(['location:detail', 'location:list', 'location:write', 'appartement:detail', 'planning:read'])]
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
+    #[Groups(['location:detail', 'location:list', 'location:write', 'appartement:detail', 'planning:read'])]
     #[ORM\Column(length: 255)]
     private ?string $prenom = null;
 
+    #[Groups(['location:detail', 'location:list', 'location:write', 'appartement:detail', 'planning:read'])]
     #[ORM\Column(length: 255)]
     private ?string $telephone = null;
 

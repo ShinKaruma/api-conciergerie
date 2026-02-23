@@ -42,26 +42,26 @@ class Appartement
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['appartement:detail', 'appartement:list'])]
+    #[Groups(['appartement:detail', 'appartement:list', 'location:detail', 'location:list', 'planning:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['appartement:write', 'appartement:detail', 'appartement:list'])]
+    #[Groups(['appartement:write', 'appartement:detail', 'appartement:list', 'location:detail', 'location:list', 'planning:read'])]
     private ?string $nom = null;
 
-    #[Groups(['appartement:write', 'appartement:detail', 'appartement:list'])]
+    #[Groups(['appartement:write', 'appartement:detail', 'appartement:list', 'location:detail', 'location:list', 'planning:read'])]
     #[ORM\Column(length: 255)]
     private ?string $lieu = null;
 
-    #[Groups(['appartement:write','appartement:detail', 'appartement:list'])]
+    #[Groups(['appartement:write','appartement:detail', 'appartement:list', 'location:detail', 'location:list', 'planning:read'])]
     #[ORM\Column]
     private ?string $numero = null;
 
-    #[Groups(['appartement:write', 'appartement:detail', 'appartement:list'])]
+    #[Groups(['appartement:write', 'appartement:detail', 'appartement:list', 'location:detail'])]
     #[ORM\Column]
     private ?string $codeCle = null;
 
-    #[Groups(['appartement:write', 'appartement:detail', 'appartement:list'])]
+    #[Groups(['appartement:write', 'appartement:detail', 'appartement:list', 'location:detail'])]
     #[ORM\Column]
     private ?string $codePorte = null;
 
@@ -72,7 +72,7 @@ class Appartement
     // Relation propre avec propriété lisible
     #[ORM\ManyToOne(inversedBy: 'appartements')]
     #[ORM\JoinColumn(name: 'id_proprietaire', nullable: false)]
-    #[Groups(['appartement:write', 'appartement:detail', 'appartement:list'])]
+    #[Groups(['appartement:write', 'appartement:detail', 'appartement:list', 'location:detail'])]
     private ?Proprietaire $proprietaire = null;
 
     #[ORM\OneToMany(mappedBy: 'appartement', targetEntity: Location::class)]
@@ -146,12 +146,12 @@ class Appartement
         return $this;
     }
 
-    public function getNbKitsDispo(): ?int
+    public function getNbKitDispo(): ?int
     {
         return $this->nbKitDispo;
     }
 
-    public function setNbKitsDispo(int $nbKitDispo): static
+    public function setNbKitDispo(int $nbKitDispo): static
     {
         $this->nbKitDispo = $nbKitDispo;
         return $this;

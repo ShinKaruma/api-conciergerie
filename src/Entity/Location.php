@@ -41,23 +41,23 @@ class Location
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['location:detail', 'location:list', 'location:write', 'appartement:detail'])]
+    #[Groups(['location:detail', 'location:list', 'location:write', 'appartement:detail', 'planning:read'])]
     private ?int $id = null;
 
-    #[Groups(['location:detail', 'location:list', 'location:write', 'appartement:detail'])]
+    #[Groups(['location:detail', 'location:list', 'location:write', 'appartement:detail', 'planning:read'])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateDebut = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Groups(['location:detail', 'location:list', 'location:write', 'appartement:detail'])]
+    #[Groups(['location:detail', 'location:list', 'location:write', 'appartement:detail', 'planning:read'])]
     private ?\DateTimeInterface $dateFin = null;
 
     #[ORM\ManyToOne(inversedBy: 'locations')]
-    #[Groups(['location:detail', 'location:list', 'location:write'])]
+    #[Groups(['location:detail', 'location:list', 'location:write', 'planning:read'])]
     private ?Appartement $appartement = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[Groups(['location:detail', 'location:list', 'location:write', 'appartement:detail'])]
+    #[Groups(['location:detail', 'location:list', 'location:write', 'appartement:detail', 'planning:read'])]
     private ?Locataire $locataire = null;
 
     /**
