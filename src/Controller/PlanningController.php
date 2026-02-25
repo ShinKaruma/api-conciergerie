@@ -7,18 +7,19 @@ use App\Dto\PlanningEventDto;
 use App\Repository\LocationRepository;
 use App\Repository\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class PlanningController extends AbstractController
 {
     public function __construct(
+        private Security $security,
         private LocationRepository $locationRepository,
     ) {}
 
     public function __invoke(): JsonResponse
     {
-        $user = $this->getUser();
+        $user = $this->security->getUser();
         $today = new \DateTimeImmutable('today');
 
         $locations = $this->locationRepository
