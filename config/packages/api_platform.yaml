@@ -7,7 +7,7 @@ api_platform:
             vary: ['Content-Type', 'Authorization', 'Origin']
 
     mapping:
-        paths: ['%kernel.project_dir%/src/Entity']
+        paths: ['%kernel.project_dir%/src/Entity', '%kernel.project_dir%/src/ApiResource']
     # Assure-toi que 'circular_reference_handler' est bien configuré
     formats:
         json: ['application/json']

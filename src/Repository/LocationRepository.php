@@ -6,6 +6,7 @@ use App\Entity\Location;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\User;  
+use DateTime;
 
 /**
  * @extends ServiceEntityRepository<Location>
@@ -29,6 +30,27 @@ class LocationRepository extends ServiceEntityRepository
             ->setParameter('conciergerie', $user->getConciergerie())
             ->setParameter('today', new \DateTimeImmutable('today'))
             ->orderBy('l.dateDebut', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findBetweenForConciergerie(
+    User $user,
+    DateTime $from,
+    DateTime $to
+    ): array {
+
+        return $this->createQueryBuilder('l')
+            ->join('l.appartement', 'a')
+            ->join('a.proprietaire', 'p')
+            ->join('p.user', 'u')
+            ->join('u.conciergerie', 'c')
+            ->andWhere('c = :conciergerie')
+            ->andWhere('l.dateDebut <= :to')
+            ->andWhere('l.dateFin >= :from')
+            ->setParameter('conciergerie', $user->getConciergerie())
+            ->setParameter('from', $from)
+            ->setParameter('to', $to)
             ->getQuery()
             ->getResult();
     }
