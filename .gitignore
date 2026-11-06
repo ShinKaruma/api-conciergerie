@@ -5,6 +5,7 @@
 /.env.local
 /.env.local.php
 /.env.*.local
+/docker/workshop/.env
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
 /var/
@@ -14,3 +15,6 @@
 ###> lexik/jwt-authentication-bundle ###
 /config/jwt/*.pem
 ###< lexik/jwt-authentication-bundle ###
+
+# Fichiers locaux de développement
+/config/reference.php
